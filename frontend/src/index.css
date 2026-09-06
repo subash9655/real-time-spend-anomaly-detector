@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-50: #f0f4ff;
+  --color-brand-100: #e0eaff;
+  --color-brand-500: #4f7bf8;
+  --color-brand-600: #3b63e8;
+  --color-brand-700: #2d4fc0;
+  --color-brand-900: #1a2d6b;
+
+  --color-surface-50: #f8faff;
+  --color-surface-100: #f1f5fd;
+  --color-surface-200: #e4ecfa;
+  --color-surface-800: #1e2740;
+  --color-surface-900: #141a2e;
+  --color-surface-950: #0d1120;
+
+  --color-normal: #22c55e;
+  --color-warning: #f59e0b;
+  --color-anomaly: #f97316;
+  --color-critical: #ef4444;
+
+  --font-sans: 'Inter', 'system-ui', sans-serif;
+  --radius: 0.75rem;
+}
+
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { font-family: var(--font-sans); }
+
+  body {
+    @apply bg-surface-950 text-slate-100 antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { @apply bg-surface-900; }
+  ::-webkit-scrollbar-thumb { @apply bg-slate-600 rounded-full; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-slate-500; }
+}
+
+@layer utilities {
+  .card {
+    @apply bg-surface-900 border border-slate-800 rounded-xl;
+  }
+  .card-hover {
+    @apply transition-all duration-200 hover:border-brand-500/40 hover:shadow-lg hover:shadow-brand-500/5;
+  }
+  .badge-normal   { @apply bg-emerald-500/15 text-emerald-400 border border-emerald-500/30; }
+  .badge-warning  { @apply bg-amber-500/15 text-amber-400 border border-amber-500/30; }
+  .badge-anomaly  { @apply bg-orange-500/15 text-orange-400 border border-orange-500/30; }
+  .badge-critical { @apply bg-red-500/15 text-red-400 border border-red-500/30; }
+
+  .btn-primary {
+    @apply bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-ghost {
+    @apply hover:bg-slate-800 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors duration-150;
+  }
+  .btn-danger {
+    @apply bg-red-600/20 hover:bg-red-600/30 text-red-400 border border-red-500/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-150;
+  }
+  .input {
+    @apply bg-surface-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500/30 transition-colors;
+  }
+  .section-title {
+    @apply text-xs font-semibold uppercase tracking-wider text-slate-500;
+  }
+  .kpi-value {
+    @apply text-2xl font-bold text-slate-100 tabular-nums;
+  }
+  .kpi-label {
+    @apply text-xs text-slate-500 font-medium;
+  }
+}
