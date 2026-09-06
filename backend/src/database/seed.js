@@ -104,7 +104,8 @@ function isAnomaly(dayOffset, hour, resourceId) {
   return null;
 }
 
-function seed(db) {
+function seed(db, options = {}) {
+  const isLightweight = options.lightweight === true;
   const existingAccounts = db.prepare('SELECT COUNT(*) as c FROM cloud_accounts').get();
   if (existingAccounts && existingAccounts.c > 0) {
     console.log('[seed] Database already seeded. Skipping.');
@@ -143,7 +144,8 @@ function seed(db) {
   const insertBillingSql = `INSERT INTO billing_records (id,account_id,resource_id,timestamp,actual_spend,expected_spend,resource_type) VALUES (@id,@account_id,@resource_id,@timestamp,@actual_spend,@expected_spend,@resource_type)`;
 
   let billingCount = 0;
-  for (let day = 0; day < 30; day++) {
+  const startDay = isLightweight ? 27 : 0;
+  for (let day = startDay; day < 30; day++) {
     for (let hour = 0; hour < 24; hour++) {
       const ts = new Date(startDate.getTime() + day * DAY_MS + hour * HOUR_MS);
       for (const res of resources) {
@@ -208,7 +210,8 @@ function seed(db) {
 
   let metricCount = 0;
   const insertMetricSql = `INSERT INTO workload_metrics (id,account_id,resource_id,timestamp,metric_type,value,unit) VALUES (@id,@account_id,@resource_id,@timestamp,@metric_type,@value,@unit)`;
-  for (let day = 0; day < 30; day++) {
+  const startDayMetrics = isLightweight ? 27 : 0;
+  for (let day = startDayMetrics; day < 30; day++) {
     for (let hour = 0; hour < 24; hour += 4) {
       const ts = new Date(startDate.getTime() + day * DAY_MS + hour * HOUR_MS);
       for (const res of resources) {

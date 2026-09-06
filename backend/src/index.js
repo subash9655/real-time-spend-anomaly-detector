@@ -25,7 +25,14 @@ async function main() {
   if (!count || count.c === 0) {
     console.log('[startup] Empty database — seeding…');
     const { seed } = require('./database/seed');
-    seed(db);
+    const isProd = process.env.NODE_ENV === 'production' || process.env.RENDER;
+    if (isProd) {
+      console.log('[startup] Production environment detected. Running lightweight seed to conserve memory.');
+      seed(db, { lightweight: true });
+    } else {
+      console.log('[startup] Local development detected. Running full seed.');
+      seed(db, { lightweight: false });
+    }
     console.log('[startup] Seed complete.');
   }
 
@@ -61,7 +68,7 @@ async function main() {
   const wss    = createWsServer(server);
   simSvc.setWsServer(wss);
 
-  server.listen(PORT, () => {
+  server.listen(PORT, '0.0.0.0', () => {
     console.log('\n╔══════════════════════════════════════════════════════════╗');
     console.log('║  SpendGuard Backend  ·  SIMULATION / DEMO ENVIRONMENT   ║');
     console.log('╠══════════════════════════════════════════════════════════╣');
