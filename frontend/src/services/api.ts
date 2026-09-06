@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: 'https://real-time-spend-anomaly-detector.onrender.com/api',
   timeout: 10000,
 });
 
